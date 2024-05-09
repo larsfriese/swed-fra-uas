@@ -8,6 +8,7 @@ class Interface {
 
     + startProcess(): void
     + displayMessage(string Message): void
+    + countCash(): void
 }
 
 class Ticket {
@@ -73,17 +74,89 @@ activate Ticket
 Ticket --> Interface: void
 deactivate Ticket
 
-Ticket -> Ticket : calculateTicketCost
+Ticket -> Ticket : calculateTicketCost()
 activate Ticket
 Ticket -> Interface: displayMessage("Current Price: ....")
 activate Interface
 Interface --> albert: Display "Current Price: 14$. Pay with cash:"
+return void
+return void
+return void
+
+albert -> Interface: pays with cash, triggers countCash()
+activate Interface
+alt money > price
+    Interface -> Printer: setTicketToPrint()
+    activate Printer
+    Printer -> Printer: printTicket()
+    activate Printer
+    Printer --> Interface: true
+    deactivate Printer
+    return void
+
+alt money = price
+    Interface --> Interface: displayMessage(...)
+    Interface --> albert: Display "Ticket printed"
+else
+    Interface --> Interface: displayMessage(...)
+    Interface --> albert: Display "Ticket printe, take change."
+end
+else money < price
+    Interface --> Interface: displayMessage(...)
+    Interface --> albert: Display "Not enough money"
+end
+
 return
-return
 
 
 
 
+@enduml
+
+@startuml
+title Development View
+
+package "Ticket Machine" {
+
+    Folder "Interface"
+    Folder "Ticket"
+    Folder "Printer"
+
+
+}
+
+package "Railway Station" {
+    Folder "RailwayStation"
+}
+
+Ticket "1" -- "2..*" RailwayStation : has
+Interface "1" *-- "1" Ticket : creates
+Interface "1" -- "1" Printer : uses
+Ticket "1" -- "1" Printer : uses
+
+@enduml
+
+
+@startuml
+title Deployment View
+
+actor albert
+
+node "Ticket Machine" {
+    component "Interface"
+    component "Ticket"
+    component "Printer"
+}
+
+node "Database" {
+    component "RailwayStation"
+}
+
+albert -> Interface : interacts
+Interface -> Ticket : creates
+Interface -> Printer : uses
+Ticket -> Printer : uses
+Ticket -> RailwayStation : has
 
 
 @enduml
