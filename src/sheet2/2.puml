@@ -1,0 +1,89 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+title Logical View
+
+class Interface {
+    - editingTicket: boolean
+
+    + startProcess(): void
+    + displayMessage(string Message): void
+}
+
+class Ticket {
+    - name: string
+    - ticketType: string
+    - startingLocation: RailwayStation
+    - destination: RailwayStation
+    - cost: float
+
+    + setName(): void
+    + setTicketType(): void
+    + setDestination(): void
+    + calculateTicketCost(RailwayStation: currentStation,\n RailwayStation: destination): float
+
+}
+
+class RailwayStation {
+    - coordinates[]: float
+    - district: boolean
+    - available: boolean
+    -
+}
+
+class Printer {
+    - ticketToPrint: Ticket
+
+    +setTicketToPrint(Ticket: ticket): void
+    +printTicket(): boolean
+}
+
+Interface "1" *-- "1" Ticket : creates
+Interface "1" -- "1" Printer : uses
+Ticket "1" -- "1" Printer : uses
+Ticket "1" -- "2..*" RailwayStation : has
+@enduml
+
+@startuml
+skinparam classAttributeIconSize 0
+
+title Process View
+autoactivate off
+albert -> Interface : clicks on "Start", triggers startProcess()
+activate Interface
+Interface -> Ticket ** : create
+
+
+albert -> Interface: types name
+
+Interface -> Ticket: setName()
+activate Ticket
+Ticket --> Interface: void
+deactivate Ticket
+
+albert -> Interface: selects ticket type
+Interface -> Ticket: setTicketType()
+activate Ticket
+Ticket --> Interface: void
+deactivate Ticket
+
+albert -> Interface: types destination
+Interface -> Ticket: setDestination()
+activate Ticket
+Ticket --> Interface: void
+deactivate Ticket
+
+Ticket -> Ticket : calculateTicketCost
+activate Ticket
+Ticket -> Interface: displayMessage("Current Price: ....")
+activate Interface
+Interface --> albert: Display "Current Price: 14$. Pay with cash:"
+return
+return
+
+
+
+
+
+
+@enduml
