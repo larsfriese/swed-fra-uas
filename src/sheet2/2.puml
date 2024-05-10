@@ -29,7 +29,16 @@ class RailwayStation {
     - coordinates[]: float
     - district: boolean
     - available: boolean
-    -
+
+}
+
+class ConnectionDB {
+    - connection: string
+    - user: string
+    - password: string
+    - listOfRailwayStations: RailwayStation[]
+
+    + updateRailwayStations() : void
 }
 
 class Printer {
@@ -42,7 +51,9 @@ class Printer {
 Interface "1" *-- "1" Ticket : creates
 Interface "1" -- "1" Printer : uses
 Ticket "1" -- "1" Printer : uses
-Ticket "1" -- "2..*" RailwayStation : has
+Ticket "1" -- "0...2" RailwayStation : has
+ConnectionDB "1" -- "1...*" RailwayStation : has
+Ticket "1" -- "1" "ConnectionDB" : uses
 @enduml
 
 @startuml
@@ -71,8 +82,11 @@ deactivate Ticket
 albert -> Interface: types destination
 Interface -> Ticket: setDestination()
 activate Ticket
-Ticket --> Interface: void
-deactivate Ticket
+Ticket -> ConnectionDB : updateRailwayStations()
+activate ConnectionDB
+ConnectionDB --> Ticket
+deactivate ConnectionDB
+
 
 Ticket -> Ticket : calculateTicketCost()
 activate Ticket
@@ -82,6 +96,8 @@ Interface --> albert: Display "Current Price: 14$. Pay with cash:"
 return void
 return void
 return void
+
+deactivate Interface
 
 albert -> Interface: pays with cash, triggers countCash()
 activate Interface
@@ -125,7 +141,8 @@ package "Ticket Machine" {
 
 }
 
-package "Railway Station" {
+package "Railway Stations" {
+    Folder "ConnectionDB"
     Folder "RailwayStation"
 }
 
@@ -133,7 +150,7 @@ Ticket "1" -- "2..*" RailwayStation : has
 Interface "1" *-- "1" Ticket : creates
 Interface "1" -- "1" Printer : uses
 Ticket "1" -- "1" Printer : uses
-
+"ConnectionDB" "1" -- "1...*" RailwayStation : has
 @enduml
 
 
@@ -150,6 +167,7 @@ node "Ticket Machine" {
 
 node "Database" {
     component "RailwayStation"
+    component "ConnectionDB"
 }
 
 albert -> Interface : interacts
@@ -157,6 +175,7 @@ Interface -> Ticket : creates
 Interface -> Printer : uses
 Ticket -> Printer : uses
 Ticket -> RailwayStation : has
+ConnectionDB -> RailwayStation : has
 
 
 @enduml
