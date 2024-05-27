@@ -14,6 +14,20 @@ Functionalities:
   - for example how many employees work in which department, how many are on vacation
 - keep documents organized and in a central place
 
+Functionalities in class:
+- Time tracking
+- check absence
+- oboardign
+- file storage
+- performance review
+- recruiting
+- eploye training
+- payroll
+- Analytics
+- Whistleblowing
+- HR Helpdesk
+- Employee Information / History
+
 ![personio architecture](1.jpeg)
 
 ## Excercise 2
@@ -68,6 +82,8 @@ you recommend this pattern here?
     and the data is then displayed from the bus to the public
    - multiserver architecture: connecting the whistleblowers and journalist happens though a network
     of servers, so tracing back the route is difficult (tor network)
+
+   - class: 
 2. A video conferencing system
    - client and server, peer to peer
    - client and server for setting up connections, peer to peer video transmission

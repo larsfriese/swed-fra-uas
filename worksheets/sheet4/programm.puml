@@ -1,0 +1,31 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Notification {
+  + Notification(): 
+}
+class Subscription {
+  + Subscription(): 
+}
+class User {
+  + User(): 
+}
+class Website {
+  + Website(): 
+  - url: String
+  + hasChanged(): boolean
+   url: String
+}
+class WebsiteMonitor {
+  + WebsiteMonitor(): 
+  + run(): void
+}
+
+Subscription   "1" *-[#595959,plain]-> "website\n1" Website        
+User           "1" *-[#595959,plain]-> "subscriptionList\n*" Subscription   
+WebsiteMonitor "1" *-[#595959,plain]-> "userList\n*" User           
+WebsiteMonitor  -[#595959,dashed]->  Website        : "«create»"
+@enduml

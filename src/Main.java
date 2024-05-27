@@ -1,15 +1,30 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import webtracker.Subscription;
+import webtracker.User;
+import webtracker.WebsiteMonitor;
+
+import java.time.Duration;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        User user = new User("Max Mustermann", "musterman@gmail.com", "123");
+
+        Duration duration = Duration.ofSeconds(2);
+        Subscription subscription = new Subscription("http://127.0.0.1", duration, "Email");
+        user.createSubscription(subscription);
+
+        WebsiteMonitor websiteMonitor = new WebsiteMonitor();
+        websiteMonitor.registerUser(user);
+
+        while (true) {
+            websiteMonitor.run();
+
+            // sleep for 1 second
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

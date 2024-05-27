@@ -1,0 +1,75 @@
+@startuml
+class UserTicketInterface
+class TicketMgmt
+class Printer
+class TrainShed
+class API
+class ShedService
+class Payment
+class PaymentAPI
+class Bank
+class CardReader
+
+UserTicketInterface --> TicketMgmt
+TicketMgmt --> Printer
+TicketMgmt --> TrainShed
+TicketMgmt --> Payment
+TrainShed --> API
+API --> ShedService
+Payment --> PaymentAPI
+Payment --> CardReader
+PaymentAPI --> Bank
+@enduml
+
+Development View: ()
+package => functional component that aggregates multiple classes
+
+Deployment view:
+- which packages on whichh server
+- concrete hardware
+- purpose: end to end automation
+
+@startuml
+class arm
+class body
+
+class car
+class tire
+
+body *--> arm
+car *--> tire
+@enduml
+
+@startuml
+title TicketMachine Sequence Diagram from Class
+autonumber "0:"
+
+"eva: User" -> "mainstation: Ticketmachine": startBooking
+activate "mainstation: Ticketmachine"
+activate "eva: User"
+
+return ticket
+deactivate "mainstation: Ticketmachine"
+
+"eva: User" -> "mainstation: Ticketmachine": selectDestination
+activate "mainstation: Ticketmachine"
+
+return showPrice
+deactivate "mainstation: Ticketmachine"
+
+"eva: User" --> "mainstation: Ticketmachine": pay
+activate "mainstation: Ticketmachine"
+
+"mainstation: Ticketmachine" -> "b1: BankServer": validate
+activate "b1: BankServer"
+return confirm
+deactivate "b1: BankServer"
+
+"mainstation: Ticketmachine" -> "p1: Printer": print
+activate "p1: Printer"
+return ok
+deactivate "p1: Printer"
+"mainstation: Ticketmachine" --> "eva: User":showSuccess
+deactivate "mainstation: Ticketmachine"
+
+@enduml

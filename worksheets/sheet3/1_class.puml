@@ -1,0 +1,17 @@
+- never verb or operation as a class name
+
+@startuml
+left to right direction
+
+class User
+class Website
+class WebsiteMonitor
+class Subscription
+class Notification
+
+User "1" -- "1..*" Subscription
+Subscription "1" -- "1" Website
+WebsiteMonitor "1" -- "1..*" User
+WebsiteMonitor "1" -- "1..*" Subscription
+Subscription "1" -- "1" Notification
+@enduml

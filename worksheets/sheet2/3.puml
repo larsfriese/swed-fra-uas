@@ -70,13 +70,13 @@ albert -> Interface: types name
 
 Interface -> Ticket: setName()
 activate Ticket
-Ticket --> Interface: void
+Ticket -->> Interface: void
 deactivate Ticket
 
 albert -> Interface: selects ticket type
 Interface -> Ticket: setTicketType()
 activate Ticket
-Ticket --> Interface: void
+Ticket -->> Interface: void
 deactivate Ticket
 
 albert -> Interface: types destination
@@ -92,9 +92,9 @@ Ticket -> Ticket : calculateTicketCost()
 activate Ticket
 Ticket -> Interface: displayMessage("Current Price: ....")
 activate Interface
-Interface --> albert: Display "Current Price: 14$. Pay with cash:"
+Interface -->> albert: Display "Current Price: 14$. Pay with cash:"
 return void
-return void
+return Ticket -->> Interface : void
 return void
 
 deactivate Interface
@@ -155,7 +155,7 @@ Ticket "1" -- "1" Printer : uses
 
 
 @startuml
-title Deployment View
+title Physical/Deployment View
 
 actor albert
 
