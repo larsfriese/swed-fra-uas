@@ -1,4 +1,4 @@
-package webtracker;
+package webtracker.subscription;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -16,6 +16,10 @@ public class Website {
 
     public Website(String url) {
         this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public void setUrl(String url) {
@@ -48,6 +52,7 @@ public class Website {
             MessageDigest md = MessageDigest.getInstance("MD5");
             currentMD5SUM = md.digest(bytesOfHTML);
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("MD5 not found, or UTF-8 unsupported encoding.");
         }
 

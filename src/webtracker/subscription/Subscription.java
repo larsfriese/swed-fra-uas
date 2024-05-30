@@ -1,4 +1,4 @@
-package webtracker;
+package webtracker.subscription;
 
 import java.time.LocalDateTime;
 import java.time.Duration;
@@ -7,13 +7,13 @@ public class Subscription {
     private Website website;
     private Duration frequency;
     private LocalDateTime lastChecked;
-    private String preferredChannel;
+    private Notification notification;
 
     public Subscription(String website, Duration frequency, String preferredChannel) {
         this.website = new Website(website);
         this.frequency = frequency;
-        this.preferredChannel = preferredChannel;
         this.lastChecked = LocalDateTime.now();
+        this.notification = new Notification(preferredChannel);
     }
 
     public void setFrequency(Duration frequency) {
@@ -21,8 +21,7 @@ public class Subscription {
     }
 
     public void notifyUser() {
-        Notification notification = new Notification();
-        notification.sendNotification(this.preferredChannel);
+        notification.sendNotification("Website has changed: " + website.getUrl() + " at " + LocalDateTime.now());
     }
 
     public Website getWebsite() {
