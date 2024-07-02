@@ -1,0 +1,136 @@
+@startuml
+skinparam classAttributeIconSize 0
+package sheet6 {
+class WebsiteMonitor {
+    + WebsiteMonitor():
+    + main(String[]): void
+}
+
+class UserInputHandler {
+    - users: Map<String, User>
+    - currentUserEmail: String
+
+    + handleUserInput(Scanner): void
+    + handleSubscriptionInput(Scanner): void
+    + createUser(String, String, String): boolean
+    + getUser(String): User
+    + validateUser(String, String): boolean
+    + getCurrentUserEmail(): String
+    + setCurrentUserEmail(String): void
+   }
+
+class BackgroundWebChecker {
+    + BackgroundWebChecker()
+    + run(): void
+}
+
+
+Interface IObserver {
+    +update()
+}
+
+Abstract class Subject {
+    -observers: IObserver[]
+    +attach(observer: IObserver)
+    +detach(observer: IObserver)
+    +notify()
+}
+
+IObserver -right- Subject
+
+class Website {
+    - url: String
+    - currentContent: Document
+    - compareContext: WebsiteComparison.CompareContext
+    - lastChanged: LocalDateTime
+    - smallestFrequency: Duration
+    {static} - allWebsites: List<Website>
+
+    + Website(String)
+    + getAllWebsites(): List<Website>
+    + getLastChanged(): LocalDateTime
+    + getUrl(): String
+    + getSmallestFrequency(): Duration
+    + setSmallestFrequency(Duration): void
+    + checkChange(): void
+}
+class User {
+    - name: String
+    - email: String
+    - password: String
+    - subscriptions: List<Subscription>
+
+    + User(String, String, String)
+    + createSubscription(String, Integer, String): void
+    + modifySubscription(String, Integer): void
+    + deleteSubscription(String): void
+    + getName(): String
+    + getEmail(): String
+    + getPassword(): String
+}
+class Notification {
+    + Notification(String)
+    + sendNotification(String): void
+}
+class Subscription {
+    - frequency: Duration
+    - websiteToObserve: Website
+    - notification: Notification
+    - lastNotified: LocalDateTime
+    - lastChanged: LocalDateTime
+    - allSubscriptions: List<Subscription>
+
+    + Subscription(String, Duration, String)
+    + notifyUser(): void
+    + checkForExistingWebsite(String): void
+    + getAllSubscriptions(): List<Subscription>
+    + getWebsite(): Website
+    + setFrequency(Duration): void
+    + update(): void
+}
+
+note top of Website
+    <size:16>Subject of Observer Pattern</size>
+
+    # GetState() here
+        is <b>GetLastChanged(): LocalDateTime</b>
+    # State here is
+        <b>lastChanged: LocalDateTime</b>
+end note
+note right of Subscription
+    <size:16>Observer of Observer Pattern</size>
+
+    # <b>Update()</b> here calls notifyUser(): void
+    # Subject state "website.lastChanged"
+        is saved
+end note
+
+
+interface WebsiteComparison.IComparisonMethod {}
+class WebsiteComparison.CompareContext {}
+
+class WebsiteComparison.HTMLContentComparer {}
+class WebsiteComparison.TextContentComparer {}
+class WebsiteComparison.ContentSizeComparer {}
+
+
+
+WebsiteMonitor "1"*--"1" BackgroundWebChecker
+WebsiteMonitor "1"*--"1" UserInputHandler
+BackgroundWebChecker --> Website
+UserInputHandler "1"*--"1...*" User
+
+IObserver <|-- Subscription
+Subject <|-- Website
+Website "1"*--"1" WebsiteComparison.CompareContext
+User "1"*--"1...*" Subscription
+Subscription "1"*--"1" Notification
+Subscription "1".-left->"0...1" Website
+
+WebsiteComparison.CompareContext *-- WebsiteComparison.IComparisonMethod
+WebsiteComparison.IComparisonMethod <|-- WebsiteComparison.HTMLContentComparer
+WebsiteComparison.IComparisonMethod <|-- WebsiteComparison.TextContentComparer
+WebsiteComparison.IComparisonMethod <|-- WebsiteComparison.ContentSizeComparer
+
+}
+@enduml
