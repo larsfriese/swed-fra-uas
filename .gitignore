@@ -30,5 +30,7 @@ bin/
 .DS_Store
 
 
-### PDFS ###
-/worksheets/pdfs/
+/worksheets/files/
+/src/test/*
+/src/sheet4webtracker/*
+/src/sheet5observer/*

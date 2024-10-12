@@ -1,0 +1,47 @@
+@startuml
+
+skinparam ClassPadding 1
+
+class User {
+    -UserID: int
+    -Email: String
+    -notificationPreference: String
+
+    +register(): void
+    +manageSubscriptions(): void
+}
+
+class Subscription {
+    -subscriptionID: int
+    -userID: int
+    -websiteID: int
+    -frequency: float
+    -communicationChannel: String
+
+    +modify(): void
+    +cancel(): void
+}
+
+class Notification {
+    -notificationID: int
+    -subscriptionID: int
+    -timestamp: String
+
+    +generate(): void
+    +deliver(): void
+}
+
+class Website {
+    -websiteID: int
+    -URL: String
+    -lastUpdated: timestamp
+
+    +checkForUpdates(): void
+}
+
+User "1" -down- "0..*" Subscription
+Website "1" -down- "0..*" Subscription
+Subscription "1" -right- "0..*" Notification
+
+
+@enduml

@@ -1,6 +1,5 @@
 @startuml
 skinparam classAttributeIconSize 0
-package sheet6 {
 class WebsiteMonitor {
     + WebsiteMonitor():
     + main(String[]): void
@@ -132,5 +131,5 @@ WebsiteComparison.IComparisonMethod <|-- WebsiteComparison.HTMLContentComparer
 WebsiteComparison.IComparisonMethod <|-- WebsiteComparison.TextContentComparer
 WebsiteComparison.IComparisonMethod <|-- WebsiteComparison.ContentSizeComparer
 
-}
+
 @enduml
